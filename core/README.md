@@ -26,7 +26,7 @@ All algorithms and data types. This is the heart of the project and the part gra
 
 `placeholder.cpp` exists only so the library builds on day one. Delete it once a real `.cpp` is added (and update `CMakeLists.txt`).
 
-## Tie-breaking (must match the proposal)
+## Tie-breaking 
 
 - Greedy site order: urgency desc, then demand desc, then ID asc (stable merge sort).
 - Greedy depot order per site: travel time asc, then ID asc.

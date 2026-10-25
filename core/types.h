@@ -1,5 +1,5 @@
 // Shared data types for ReliefRoute.
-// Keep these in sync with the proposal (Section 4, Data Structures).
+// Intial scaffold
 #pragma once
 
 #include <string>

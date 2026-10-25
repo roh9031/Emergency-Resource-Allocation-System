@@ -1,6 +1,6 @@
 # cli/
 
-Command-line interface over `core/`. Owner: B.
+Command-line interface over `core/`. 
 
 ## Two modes
 

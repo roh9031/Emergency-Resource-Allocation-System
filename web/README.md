@@ -1,6 +1,6 @@
 # web/
 
-Browser frontend. Owner: B. Served as static files by the C++ server.
+Browser frontend. Served as static files by the C++ server.
 
 ## Rules
 
