@@ -2,7 +2,7 @@
 
 **When is greedy good enough?** A web-based emergency resource allocation system with a C++ engine that compares greedy, maximum-flow, lexicographic-flow, min-cost-flow, and max-min fair allocation under scarcity.
 
-> Course project for `COURSE CODE`. Team: `MEMBER A`, `MEMBER B`.
+> Course project for `Fundamentals Of Computer Engineering`. Team: `Rohini Bidnurmath`, `Catalina Buitano`.
 
 ## Research question
 
@@ -39,43 +39,7 @@ Supporting algorithms (all written by us): merge sort, binary search, grid neare
 
 Every folder has its own README with a to-do list.
 
-## Build and run
-
-Requirements: g++ (C++17), CMake ≥ 3.16.
-
-```bash
-cmake -S . -B build
-cmake --build build
-./build/reliefroute-cli          # menu (placeholder for now)
-ctest --test-dir build           # run tests
-```
-
-The server target is added once `third_party/` is populated (see `server/README.md`).
-
-## Progress
-
-### Iteration 1
-- [ ] Repo setup: branch protection, `dev` branch, CI green
-- [ ] Data types in `core/types.h` finalized
-- [ ] CSV loaders and savers with validation
-- [ ] Merge sort and binary search, with tests
-- [ ] CLI menu skeleton
-- [ ] Server `/api/health`
-
-### Iteration 2
-- [ ] Dijkstra, travel matrix, nearest-node grid search
-- [ ] Greedy (A1), Edmonds–Karp (A2)
-- [ ] `/api/allocate`; frontend map loads a scenario and draws an allocation
-
-### Iteration 3
-- [ ] Min-cost flow (A3, A4), max-min fair (A5), metrics
-- [ ] `/api/compare`, comparison dashboard, what-if road closures
-
-### Iteration 4
-- [ ] Generator and experiments, real-data case study
-- [ ] Performance tuning (Dijkstra with potentials)
-- [ ] Final report
 
 ## Contributing
 
-Read [`CONTRIBUTING.md`](CONTRIBUTING.md) before your first commit.
+Read [`CONTRIBUTING.md`](CONTRIBUTING.md) 

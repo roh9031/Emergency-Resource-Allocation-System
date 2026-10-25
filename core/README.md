@@ -6,7 +6,7 @@ All algorithms and data types. This is the heart of the project and the part gra
 
 - Pure C++17 and the standard library only. No external libraries here.
 - Algorithms take data as parameters and return results. **No `cin`, `cout`, or file access inside algorithm functions.** (File reading lives only in `io.cpp`.)
-- Free functions and structs; classes are not required.
+- Object oriented
 - Every function gets a comment with its time and space complexity.
 
 ## Files to create
