@@ -1,0 +1,37 @@
+# Build output
+build/
+cmake-build-*/
+*.o
+*.exe
+*.out
+
+# Editors
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Data: raw downloads are large and re-downloadable
+data/raw/*
+!data/raw/README.md
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/README.md
+!data/processed/.gitkeep
+
+# Experiment output (keep summaries only, see experiments/README.md)
+experiments/results/*
+!experiments/results/README.md
+!experiments/results/.gitkeep
+
+# Python
+__pycache__/
+.venv/
+
+# LaTeX build files
+*.aux
+*.log
+*.toc
+*.synctex.gz
+*.fdb_latexmk
+*.fls

@@ -1,0 +1,4 @@
+id,name,demand,urgency,lat,lon
+1,Site X,10,10,35.60,-82.55
+2,Site Y,8,9,35.70,-82.40
+3,Site Z,5,4,35.50,-82.70
