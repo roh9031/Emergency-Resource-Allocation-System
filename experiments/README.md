@@ -15,7 +15,7 @@
 - `configs/` — grid configuration files read by `reliefroute-cli --batch`.
 - `results/` — raw output CSVs (gitignored). Commit only small summary CSVs and final figures under `docs/figures/`.
 
-## Tips
+## Intial plan
 
 - Debug on n = 50 and 200 first; full small sweeps take minutes.
 - Run n = 1000 and 5000 overnight, splitting seeds across CPU cores.

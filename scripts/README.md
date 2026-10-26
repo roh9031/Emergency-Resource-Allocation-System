@@ -1,6 +1,6 @@
 # scripts/
 
-Python helpers for data preparation and plotting only. **No allocation algorithms here** — those are in C++.
+Python helpers for data preparation and plotting only. **No allocation algorithms here** those are in C++.
 
 ## Scripts to write
 
