@@ -24,7 +24,6 @@ All algorithms and data types. This is the heart of the project and the part gra
 | `generator.h/.cpp` | `generateInstance` (seeded) | B | 4 |
 | `experiment.h/.cpp` | `runExperiment` | B | 4 |
 
-`placeholder.cpp` exists only so the library builds on day one. Delete it once a real `.cpp` is added (and update `CMakeLists.txt`).
 
 ## Tie-breaking 
 

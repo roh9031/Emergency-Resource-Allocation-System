@@ -18,7 +18,7 @@
 
 Record the exact download URL and date for every file in `data/SOURCES.md` (create it), so results are reproducible. Download the SVI and HIFLD files early; their hosting has changed before.
 
-## Derived values (must be documented as assumptions)
+## Derived values (Assumptions)
 
 - Demand = population × kits per resident × affected fraction.
 - Depot supply: assumed (e.g., proportional to hospital beds).
