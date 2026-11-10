@@ -5,9 +5,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_compile_options(-Wall -Wextra)
 
-# Core library: add .cpp files here as you create them 
+# core library add .cpp files here as you create them 
 add_library(core STATIC
     core/placeholder.cpp
+    core/algorithms/FlowNetwork.cpp
     # core/io.cpp
     # core/search_sort.cpp
     # core/graph.cpp
@@ -32,6 +33,9 @@ target_link_libraries(reliefroute-cli PRIVATE core)
 
 # Tests 
 enable_testing()
-add_executable(unit-tests tests/test_main.cpp)
+add_executable(unit-tests
+    tests/test_main.cpp
+    tests/test_flow_network.cpp
+)
 target_link_libraries(unit-tests PRIVATE core)
 add_test(NAME unit-tests COMMAND unit-tests)
