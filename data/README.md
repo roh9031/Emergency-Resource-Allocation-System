@@ -16,7 +16,6 @@
 | HIFLD Open hospitals, fire/EMS stations (DataLumos archive) | Depot locations |
 | DIMACS 9th Challenge road networks (TIGER `.gr` / `.co`) | Travel times |
 
-Record the exact download URL and date for every file in `data/SOURCES.md` (create it), so results are reproducible. Download the SVI and HIFLD files early; their hosting has changed before.
 
 ## Derived values (Assumptions)
 
