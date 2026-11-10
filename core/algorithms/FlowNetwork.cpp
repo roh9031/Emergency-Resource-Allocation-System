@@ -1,6 +1,8 @@
 #include "algorithms/FlowNetwork.h"
 
 #include <stdexcept>
+#include <queue>
+#include<limits>
 
 // Time O(V) space O(V)
 FlowNetwork::FlowNetwork(int numNodes) {
@@ -55,6 +57,132 @@ int FlowNetwork::addEdge(int from, int to, int capacity, long long cost) {
     return static_cast<int>(edgeRef_.size()) - 1;
 
     
+}
+
+// Edmonds-Karp maximum flow
+// Time O(V * E^2) space O(V) extra
+long long FlowNetwork::maxFlow(int s, int t) {
+    checkNode(s);
+    checkNode(t);
+    if (s == t) {
+        throw std::invalid_argument("FlowNetwork::maxFlow: s == t");
+    }
+
+    std::vector<int> parentNode(numNodes(), -1);
+    std::vector<int> parentEdge(numNodes(), -1);
+    long long total = 0;
+
+    while (findAugmentingPath(s, t, parentNode, parentEdge)) {
+        /*push the bottleneck along the path BFS just found
+        
+           Pass 1 find the bottleneck b
+             start b at std::numeric_limits<int>::max() (needs <limits>)
+             walk v from t back to s  u = parentNode[v],
+             the edge used is adj_[u][parentEdge[v]]; b = min(b, its cap)
+        
+           Pass 2 push b units (same walk)
+             take the edge BY REFERENCE (Edge& e = ) otherwise 
+             modify a copy and nothing changes -> infinite loop
+             e.cap -= b;   its partner is adj_[v][e.rev] add b to it
+        
+           Finally total += b
+        
+            */
+
+        // Pass 1 find the bottleneck capacity
+        int bottleneck = std::numeric_limits<int>::max();
+
+        for (int v = t; v != s; v = parentNode[v]) {
+            int u = parentNode[v];
+            int edgeIdx = parentEdge[v];
+
+            const Edge& e = adj_[u][edgeIdx];
+
+            if (e.cap < bottleneck) {
+                bottleneck = e.cap;
+            }
+        }
+
+        // Pass 2update forward and reverse residual capacities
+        for (int v = t; v != s; v = parentNode[v]) {
+            int u = parentNode[v];
+            int edgeIdx = parentEdge[v];
+
+            Edge& e = adj_[u][edgeIdx];
+
+            e.cap -= bottleneck;
+            adj_[v][e.rev].cap += bottleneck;
+        }
+
+        // Add the flow sent along this augmenting path
+        total += bottleneck;
+    
+        
+    }
+    return total;
+}
+
+// BFS for a shortest augmenting path
+// Time O(V + E) space O(V)
+bool FlowNetwork::findAugmentingPath(int s, int t,
+                                     std::vector<int>& parentNode,
+                                     std::vector<int>& parentEdge) const {
+    /* breadth first search from s using only edges with cap > 0.
+    
+       for my ref
+        1. Reset parentNode to all -1 (it is reused across iterations) then
+           set parentNode[s] = s so s counts as visited
+        2. Use a std::queue<int> ; push s
+        3. While the queue is not empty: pop u; loop over i = 0 
+           adj_[u].size()-1 with e = adj_[u][i]. If e.cap > 0 and
+           parentNode[e.to] == -1: record parentNode[e.to] = u and
+           parentEdge[e.to] = i; if e.to == t return true; else push e.to
+        4. Queue emptied without reaching t -> return false
+        5. Use an index loop (not range-for) so we have i for parentEdge 
+    */
+
+    for (int i = 0; i < numNodes(); ++i) {
+    parentNode[i] = -1;
+    parentEdge[i] = -1;
+}
+
+    // Mark source as visited
+    parentNode[s] = s;
+
+    std::queue<int> q;
+    q.push(s);
+
+    while (!q.empty()) {
+
+        int u = q.front();
+        q.pop();
+
+        // Examine every outgoing residual edge from u
+        for (int i = 0; i < static_cast<int>(adj_[u].size()); ++i) {
+
+            const Edge& e = adj_[u][i];
+
+            // Only consider edges with positive residual capacity
+            // Also skip nodes that have already been visited
+            if (e.cap > 0 && parentNode[e.to] == -1) {
+
+                // Record how we reached this node.
+                parentNode[e.to] = u;
+                parentEdge[e.to] = i;
+
+                // Destination reached augmenting path found
+                if (e.to == t) {
+                    return true;
+                }
+
+                q.push(e.to);
+            }
+        }
+    }
+
+    // No augmenting path exists.
+    return false;
+  
 }
 
 // Time O(1) space O(1)

@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_compile_options(-Wall -Wextra)
 
-# core library add .cpp files here as you create them 
+# core library add .cpp files here as they are created  
 add_library(core STATIC
     core/placeholder.cpp
     core/algorithms/FlowNetwork.cpp
@@ -39,3 +39,5 @@ add_executable(unit-tests
 )
 target_link_libraries(unit-tests PRIVATE core)
 add_test(NAME unit-tests COMMAND unit-tests)
+# An infinite loop in a flow algorithm fails the test instead of hanging ctest
+set_tests_properties(unit-tests PROPERTIES TIMEOUT 30)

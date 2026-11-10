@@ -41,6 +41,15 @@ public:
     // Time O(1) space O(1)
     int capacityOf(int edgeId) const;
 
+    // Edmonds-Karp: repeatedly pushes flow along a shortest (BFS) augmenting
+    // path from s to t until none remains. Returns the flow added by THIS
+    // call (a second call on the same network returns 0).
+    // Throws std::out_of_range if s/t is not a node, std::invalid_argument
+    // if s == t.
+    // Time O(V * E^2) (also at most F augmentations, so O(min(F, VE) * E)),
+    // space O(V) extra.
+    long long maxFlow(int s, int t);
+
 private:
     struct Edge {
         int to;          // head node
@@ -54,6 +63,17 @@ private:
 
     // Returns the forward edge for edgeId; throws std::out_of_range
     const Edge& forwardEdge(int edgeId) const;
+
+    /* BFS from s over edges with cap > 0 on return for every reached node
+    // v != s: parentNode[v] is the node before v on the path and
+    // parentEdge[v] is the index of the edge parentNode[v] -> v inside
+    // adj_[parentNode[v]] unreached nodes have parentNode[v] == -1
+    // Returns true if t was reached. */
+    
+    // Time O(V + E) space O(V)
+    bool findAugmentingPath(int s, int t,
+                            std::vector<int>& parentNode,
+                            std::vector<int>& parentEdge) const;
 
     std::vector<std::vector<Edge>> adj_;       // adj_[u] = edges leaving u
     std::vector<std::pair<int, int>> edgeRef_; // id -> (node, index in adj_[node])
