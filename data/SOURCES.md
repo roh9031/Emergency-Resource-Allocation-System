@@ -1,7 +1,7 @@
 # Data sources
 
 Every external dataset used by ReliefRoute, with enough detail to download it
-again and cite it in the report. Raw downloads live in `data/raw/` and are
+again and cite. Raw downloads live in `data/raw/` and are
 **not committed** (see `data/README.md`); cleaned files produced by `scripts/`
 go in `data/processed/`. Fields marked TODO still need to be filled in.
 
@@ -12,14 +12,14 @@ go in `data/processed/`. Fields marked TODO still need to be filled in.
 - **Title:** OpenFEMA Disaster Declarations Summaries (v2)
 - **Publisher:** FEMA (OpenFEMA)
 - **Page URL:** https://www.fema.gov/openfema-data-page/disaster-declarations-summaries-v2
-- **File(s) downloaded:** the full CSV of Disaster Declarations Summaries v2 (about 70,600 records). File name: `DisasterDeclarationsSummaries.csv`
-- **Version / vintage:** v2; last data refresh 11-10-2026 (as shown on page)
+- **File(s) downloaded:** the full CSV of Disaster Declarations Summaries v2 (about 70,600 records). File name: TODO
+- **Version / vintage:** v2; last data refresh 11-10-2026 (as shown on the page)
 - **Date accessed:** 11/09/2026
 - **License / terms:** OpenFEMA Terms and Conditions page (TODO: URL and summary)
 - **Citation for the report:** TODO: copy the citation format from the OpenFEMA Terms and Conditions page
 - **Notes:**
   - Used for: affected counties (sites).
-  - Columns we'll use: `declarationType`, `state`, `declarationDate`, `incidentType`, `femaDeclarationString`, `fipsStateCode`, `fipsCountyCode`, `designatedArea`.
+  - Columns we'll use: declarationType, fipsCountyCode (others: TODO)
   - Known quirks:
     - Keep `declarationType` DR only.
     - Drop `fipsCountyCode` 000 (statewide declarations).
@@ -51,10 +51,10 @@ go in `data/processed/`. Fields marked TODO still need to be filled in.
 
 - **Title:** TODO
 - **Publisher:** CDC/ATSDR
-- **Page URL:** https://www.atsdr.cdc.gov/place-health/php/svi/svi-data-documentation-download.html
+- **Page URL:** atsdr.cdc.gov/place-health/php/svi/svi-data-documentation-download.html
 - **File(s) downloaded:**
-  - CSV: Year 2022, Geography United States, Geography Type Counties. File name: `SVI_2022_US_COUNTY.csv`
-  - 2022 documentation PDF (has the column dictionary). File name: `SVI2022Documentation_ZCTA.pdf`
+  - CSV: Year 2022, Geography United States, Geography Type Counties. File name: TODO
+  - 2022 documentation PDF (has the column dictionary). File name: TODO
 - **Version / vintage:** 2022
 - **Date accessed:** 11/09/2026
 - **License / terms:** TODO
@@ -101,7 +101,7 @@ go in `data/processed/`. Fields marked TODO still need to be filled in.
 - **File(s) downloaded:** none. The DIMACS download is blocked from our network (the server returns a 236-byte error page; tried http and https on 11/09/2026).
 - **Version / vintage:** TODO
 - **Date accessed:** tried 11/09/2026 (DIMACS)
-- **License / terms:** OpenStreetMap data is under the Open Database License (ODbL). Attribution: © OpenStreetMap contributors.
+- **License / terms:** Attribution: © OpenStreetMap contributors. License name: TODO
 - **Citation for the report:** TODO
 - **Notes:**
   - Plan: build the road network from OpenStreetMap with OSMnx in iteration 4, and export it to DIMACS `.gr`/`.co` format, so the C++ reader still takes DIMACS files.
@@ -109,3 +109,26 @@ go in `data/processed/`. Fields marked TODO still need to be filled in.
   - Region extracted: TODO
   - OSMnx version and query parameters: TODO
   - Known quirks: TODO
+
+---
+
+## 6. Census Gazetteer Files: Counties (national)
+
+- **Title:** 2026 National Counties Gazetteer File
+- **Publisher:** U.S. Census Bureau
+- **Page URL:** https://www.census.gov/geographies/reference-files/2026/geo/gazetter-file.html
+- **File(s) downloaded:**
+  - `2026_Gaz_counties_national.zip` (from https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2026_Gazetteer/2026_Gaz_counties_national.zip)
+  - Unzipped: `2026_Gaz_counties_national.txt` (TODO: unzip later amd confirm name)
+- **Version / vintage:** 2026
+- **Date accessed:** 11/09/2026
+- **License / terms:** TODO
+- **Citation for the report:** TODO
+- **Notes:**
+  - Used for: county latitude/longitude for sites.
+  - Columns we'll use: `GEOID` (5-digit county FIPS), `NAME`, `INTPTLAT`, `INTPTLONG`.
+  - Known quirks:
+    - Tab-separated, not comma-separated.
+    - Read `GEOID` as text so leading zeros survive.
+    - Strip whitespace from column names (the last header can have trailing spaces).
+    - The Census page notes some records contain special characters (e.g. accented county names), so check the file encoding when loading.
