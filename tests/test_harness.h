@@ -81,3 +81,5 @@ inline int failures = 0;
 // in test_main.cpp for every new test file
 void runFlowNetworkTests();
 void runBinarySearchTests();
+void runAllocationResultTests();
+void runAllocationStrategyTests();

@@ -8,6 +8,8 @@ so ctest and CI fail */
 int main() {
     runFlowNetworkTests();
     runBinarySearchTests();
+    runAllocationResultTests();
+    runAllocationStrategyTests();
 
     if (testing::failures == 0) {
         std::cout << "All tests passed.\n";
