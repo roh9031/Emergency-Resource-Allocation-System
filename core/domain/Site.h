@@ -1,3 +1,7 @@
+/* One affected location that needs relief kits (a county in the case study)
+ Holds the real id from sites.csv, how many kits it needs (demand) and how
+ urgent it is (urgency, e.g. the SVI score). node() is the nearest road node,
+ -1 until SpatialGrid snaps the site onto the road graph (iteration 4) */
 #pragma once
 
 #include <string>

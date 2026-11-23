@@ -9,9 +9,9 @@ add_compile_options(-Wall -Wextra)
 # (BinarySearch, MergeSort, AllocationStrategy, CostScale) need no entry
 add_library(core STATIC
     # domain: problem data with validated invariants
-    # core/domain/Site.cpp
-    # core/domain/Depot.cpp
-    # core/domain/Params.cpp
+    core/domain/Site.cpp
+    core/domain/Depot.cpp
+    core/domain/Params.cpp
     # core/domain/RoadGraph.cpp
     # core/domain/Scenario.cpp
     # core/domain/SpatialGrid.cpp
@@ -65,6 +65,9 @@ add_executable(unit-tests
     tests/test_binary_search.cpp
     tests/test_allocation_result.cpp
     tests/test_allocation_strategy.cpp
+    tests/test_site.cpp
+    tests/test_depot.cpp
+    tests/test_params.cpp
 )
 target_link_libraries(unit-tests PRIVATE core)
 add_test(NAME unit-tests COMMAND unit-tests)
