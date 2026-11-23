@@ -15,7 +15,7 @@ add_library(core STATIC
     # core/domain/RoadGraph.cpp
     # core/domain/Scenario.cpp
     # core/domain/SpatialGrid.cpp
-    # core/domain/Allocation.cpp
+    core/domain/Allocation.cpp
 
     # algorithms: all graded algorithms
     core/algorithms/FlowNetwork.cpp
@@ -63,6 +63,8 @@ add_executable(unit-tests
     tests/test_main.cpp
     tests/test_flow_network.cpp
     tests/test_binary_search.cpp
+    tests/test_allocation_result.cpp
+    tests/test_allocation_strategy.cpp
 )
 target_link_libraries(unit-tests PRIVATE core)
 add_test(NAME unit-tests COMMAND unit-tests)
