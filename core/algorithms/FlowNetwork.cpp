@@ -89,37 +89,50 @@ long long FlowNetwork::maxFlow(int s, int t) {
         
             */
 
-        // Pass 1 find the bottleneck capacity
-        int bottleneck = std::numeric_limits<int>::max();
-
-        for (int v = t; v != s; v = parentNode[v]) {
-            int u = parentNode[v];
-            int edgeIdx = parentEdge[v];
-
-            const Edge& e = adj_[u][edgeIdx];
-
-            if (e.cap < bottleneck) {
-                bottleneck = e.cap;
-            }
-        }
-
-        // Pass 2update forward and reverse residual capacities
-        for (int v = t; v != s; v = parentNode[v]) {
-            int u = parentNode[v];
-            int edgeIdx = parentEdge[v];
-
-            Edge& e = adj_[u][edgeIdx];
-
-            e.cap -= bottleneck;
-            adj_[v][e.rev].cap += bottleneck;
-        }
-
-        // Add the flow sent along this augmenting path
-        total += bottleneck;
-    
-        
+                total += pushAlongPath(s, t, parentNode, parentEdge);
     }
     return total;
+}   
+        
+// Push the bottleneck along a stored s -> t path
+// Time O(path length) = O(V), space O(1)
+int FlowNetwork::pushAlongPath(int s, int t,
+                              const std::vector<int>& parentNode,
+                              const std::vector<int>& parentEdge) {
+    if (parentNode[t] == -1) {
+        throw std::logic_error(
+            "FlowNetwork::pushAlongPath: no path stored"
+        );
+    }
+
+    // Pass 1 find the bottleneck capacity
+    int bottleneck = std::numeric_limits<int>::max();
+
+    for (int v = t; v != s; v = parentNode[v]) {
+        int u = parentNode[v];
+        int edgeIdx = parentEdge[v];
+
+        // for my ref adj_[u][edgeIdx] is the edge used to reach v
+        const Edge& e = adj_[u][edgeIdx];
+
+        if (e.cap < bottleneck) {
+            bottleneck = e.cap;
+        }
+    }
+
+    // Pass 2 push flow along the path
+    for (int v = t; v != s; v = parentNode[v]) {
+        int u = parentNode[v];
+        int edgeIdx = parentEdge[v];
+
+        // for my ref e.rev gives the index of the reverse edge in adj_[v]
+        Edge& e = adj_[u][edgeIdx];
+
+        e.cap -= bottleneck;
+        adj_[v][e.rev].cap += bottleneck;
+    }
+
+    return bottleneck;
 }
 
 // BFS for a shortest augmenting path

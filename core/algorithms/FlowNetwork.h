@@ -1,7 +1,7 @@
-// Residual flow network shared by all flow-based allocators (A2-A5)
-// Every arc added with addEdge() is stored as a forward edge plus a paired
-// reverse edge (capacity 0, cost -cost) Each edge records the index of its
-// partner so pushing flow updates both directions in O(1)
+/* Residual flow network shared by all flow-based allocators (A2-A5)
+Every arc added with addEdge() is stored as a forward edge plus a paired
+reverse edge (capacity 0, cost -cost) Each edge records the index of its
+partner so pushing flow updates both directions in O(1) */
 #pragma once
 
 #include <utility>
@@ -9,10 +9,10 @@
 
 class FlowNetwork {
 public:
-    // Creates a network with nodes 0..numNodes-1 and no edges
-    // Throws std::invalid_argument if numNodes <= 0
-    // Time O(V) space O(V)
-    explicit FlowNetwork(int numNodes);
+    /* Creates a network with nodes 0..numNodes-1 and no edges
+     Throws std::invalid_argument if numNodes <= 0
+     Time O(V) space O(V)*/
+    explicit FlowNetwork(int numNodes); 
 
     /* Adds arc from -> to with the given capacity and per-unit cost plus its
      reverse residual edge returns the arc's id (0, 1, 2, ... in order)
@@ -41,13 +41,13 @@ public:
     // Time O(1) space O(1)
     int capacityOf(int edgeId) const;
 
-    // Edmonds-Karp: repeatedly pushes flow along a shortest (BFS) augmenting
-    // path from s to t until none remains. Returns the flow added by THIS
-    // call (a second call on the same network returns 0).
-    // Throws std::out_of_range if s/t is not a node, std::invalid_argument
-    // if s == t.
-    // Time O(V * E^2) (also at most F augmentations, so O(min(F, VE) * E)),
-    // space O(V) extra.
+    /* Edmonds-Karp: repeatedly pushes flow along a shortest (BFS) augmenting
+       path from s to t until none remains Returns the flow added by THIS
+       call (a second call on the same network returns 0).
+       Throws std::out_of_range if s/t is not a node std::invalid_argument
+       if s == t
+       Time O(V * E^2) (also at most F augmentations so O(min(F VE) * E))
+       space O(V) extra*/
     long long maxFlow(int s, int t);
 
 private:
@@ -65,16 +65,28 @@ private:
     const Edge& forwardEdge(int edgeId) const;
 
     /* BFS from s over edges with cap > 0 on return for every reached node
-    // v != s: parentNode[v] is the node before v on the path and
-    // parentEdge[v] is the index of the edge parentNode[v] -> v inside
-    // adj_[parentNode[v]] unreached nodes have parentNode[v] == -1
-    // Returns true if t was reached. */
+       v != s: parentNode[v] is the node before v on the path and
+       parentEdge[v] is the index of the edge parentNode[v] -> v inside
+       adj_[parentNode[v]] unreached nodes have parentNode[v] == -1
+       Returns true if t was reached */
     
     // Time O(V + E) space O(V)
     bool findAugmentingPath(int s, int t,
                             std::vector<int>& parentNode,
                             std::vector<int>& parentEdge) const;
 
-    std::vector<std::vector<Edge>> adj_;       // adj_[u] = edges leaving u
+    /* Pushes the bottleneck amount of flow along the s -> t path stored in
+     parentNode/parentEdge (same meaning as filled by findAugmentingPath)
+     and returns that amount Shared by maxFlow and the cost aware augment
+     so the push logic exists once
+     Precondition (not checked): the arrays describe a simple s -> t path
+     whose edges all have cap > 0 as produced by BFS or bellman ford
+     Throws std::logic_error if parentNode[t] == -1 (no path stored)
+     Time O(path length) = O(V) space O(1) */
+    int pushAlongPath(int s, int t,
+                      const std::vector<int>& parentNode,
+                      const std::vector<int>& parentEdge);
+
+    std::vector<std::vector<Edge>> adj_;      // adj_[u] = edges leaving u
     std::vector<std::pair<int, int>> edgeRef_; // id -> (node, index in adj_[node])
 };
