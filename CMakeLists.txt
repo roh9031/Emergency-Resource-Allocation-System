@@ -36,6 +36,7 @@ enable_testing()
 add_executable(unit-tests
     tests/test_main.cpp
     tests/test_flow_network.cpp
+    tests/test_binary_search.cpp
 )
 target_link_libraries(unit-tests PRIVATE core)
 add_test(NAME unit-tests COMMAND unit-tests)

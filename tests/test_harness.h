@@ -60,9 +60,9 @@ inline int failures = 0;
         }                                                                  \
     } while (0)
 
-// Runs one test function. An unexpected exception counts as one failure
-// instead of aborting the whole run, so the remaining tests still execute.
-// Time O(1) overhead beyond the test itself.
+// Runs one test function an unexpected exception counts as one failure
+// instead of aborting the whole run so the remaining tests still execute.
+// Time O(1) overhead beyond the test itself
 #define RUN_TEST(testFn)                                                   \
     do {                                                                   \
         try {                                                              \
@@ -80,3 +80,4 @@ inline int failures = 0;
 // One entry point per class under test add a declaration here and a call
 // in test_main.cpp for every new test file
 void runFlowNetworkTests();
+void runBinarySearchTests();
