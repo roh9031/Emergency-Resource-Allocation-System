@@ -40,6 +40,10 @@ Exact URLs, versions, access dates, and licenses for every file are in `SOURCES.
 | `roads.gr` | DIMACS arcs `a u v w`, 1-based nodes, weight `w` = travel time in whole seconds (≥ 1) |
 | `roads.co` | DIMACS coordinates `v id lon lat`, integers with 6 implied decimals (longitude first) |
 
+## Links (`links.csv`, temporary)
+
+Until travel times exist, each scenario also has `links.csv` with columns `depotId,siteId,capacity`: one row per depot → site connection that is allowed, and the most units it can carry. It is used by the iteration-3 prototype and the sample scenarios in `sample/`. In iteration 4, Dijkstra computes travel times on the road network, a link exists when travel time ≤ the deadline, and `links.csv` is no longer needed.
+
 ## Scripts (`scripts/`, iteration 4)
 
 - `build_case_study.py`: joins FEMA + Census + SVI + Gazetteer on county FIPS, plus HIFLD hospitals → `sites.csv`, `depots.csv`.

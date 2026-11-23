@@ -6,6 +6,7 @@ Python helpers for data preparation and plotting only. **No allocation algorithm
 
 - `download_data.py` — fetch raw datasets into `data/raw/` and log URLs and dates.
 - `build_case_study.py` — join FEMA counties + Census population + SVI on county FIPS; attach depot locations; write `data/processed/sites.csv` and `depots.csv`.
+- `make_sample_large.py` — generate `data/sample/large/` (200 sites, 20 depots, fixed seed); its comments explain why the expected max flow equals total supply. Standard library only: `python scripts/make_sample_large.py`.
 - `plot_results.py` — read `experiments/results/*.csv`; produce gap heat maps, runtime-vs-size plots, and equity charts for the report.
 
 Setup:
