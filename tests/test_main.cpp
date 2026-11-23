@@ -13,6 +13,8 @@ int main() {
     runSiteTests();
     runDepotTests();
     runParamsTests();
+    runCsvReaderTests();
+    runSampleLoaderTests();
 
     if (testing::failures == 0) {
         std::cout << "All tests passed.\n";

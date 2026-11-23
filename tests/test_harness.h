@@ -86,3 +86,5 @@ void runAllocationStrategyTests();
 void runSiteTests();
 void runDepotTests();
 void runParamsTests();
+void runCsvReaderTests();
+void runSampleLoaderTests();
