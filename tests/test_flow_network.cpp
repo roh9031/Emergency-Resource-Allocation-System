@@ -245,6 +245,39 @@ void testMaxFlowSecondCallAddsNothing() {
     CHECK_EQ(net.flowOn(b), 4);
 }
 
+// MF11. Bottleneck in the middle of a longer path: the push must walk the
+// WHOLE path, so every arc carries the flow, not just the first or last
+void testMaxFlowLongPathMiddleBottleneck() {
+    FlowNetwork net(5);
+    int ids[4];
+    ids[0] = net.addEdge(0, 1, 9);
+    ids[1] = net.addEdge(1, 2, 7);
+    ids[2] = net.addEdge(2, 3, 2);
+    ids[3] = net.addEdge(3, 4, 8);
+    CHECK_EQ(net.maxFlow(0, 4), 2LL);
+    for (int i = 0; i < 4; ++i) {
+        CHECK_EQ(net.flowOn(ids[i]), 2);
+    }
+}
+
+// MF12. Invariant forward cap + reverse cap == original capacity on every
+// arc after many augmentations (fails if the push forgets the reverse edge
+// or updates the wrong partner)
+void testMaxFlowKeepsCapacitiesConstant() {
+    const int s = 0, v1 = 1, v2 = 2, v3 = 3, v4 = 4, t = 5;
+    const int from[9] = {s, s, v1, v2, v3, v2, v4, v3, v4};
+    const int to[9] = {v1, v2, v3, v1, v2, v4, v3, t, t};
+    const int cap[9] = {16, 13, 12, 4, 9, 14, 7, 20, 4};
+    FlowNetwork net(6);
+    for (int i = 0; i < 9; ++i) {
+        net.addEdge(from[i], to[i], cap[i]);
+    }
+    CHECK_EQ(net.maxFlow(s, t), 23LL);
+    for (int id = 0; id < 9; ++id) {
+        CHECK_EQ(net.capacityOf(id), cap[id]);
+    }
+}
+
 }  // namespace
 
 void runFlowNetworkTests() {
@@ -268,4 +301,6 @@ void runFlowNetworkTests() {
     RUN_TEST(testMaxFlowClrsExample);
     RUN_TEST(testMaxFlowSampleScenarioConstraints);
     RUN_TEST(testMaxFlowSecondCallAddsNothing);
+    RUN_TEST(testMaxFlowLongPathMiddleBottleneck);
+    RUN_TEST(testMaxFlowKeepsCapacitiesConstant);
 }
