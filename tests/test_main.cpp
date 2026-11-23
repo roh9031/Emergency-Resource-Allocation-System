@@ -15,6 +15,7 @@ int main() {
     runParamsTests();
     runCsvReaderTests();
     runSampleLoaderTests();
+    runCliTests();
 
     if (testing::failures == 0) {
         std::cout << "All tests passed.\n";

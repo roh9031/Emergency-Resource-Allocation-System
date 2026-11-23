@@ -88,3 +88,4 @@ void runDepotTests();
 void runParamsTests();
 void runCsvReaderTests();
 void runSampleLoaderTests();
+void runCliTests();
