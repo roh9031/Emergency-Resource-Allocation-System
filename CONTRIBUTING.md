@@ -19,7 +19,7 @@ git pull
 git checkout -b feature/merge-sort
 
 # 3. Work, then commit small steps often
-git add core/search_sort.cpp tests/test_search_sort.cpp
+git add core/algorithms/MergeSort.h tests/test_merge_sort.cpp
 git commit -m "Add merge sort for sites by urgency"
 
 # 4. Push your branch
