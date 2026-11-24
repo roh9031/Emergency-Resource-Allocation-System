@@ -64,7 +64,9 @@ std::string wrongFieldCount(std::size_t expected, std::size_t got) {
            ", got " + std::to_string(got) + ")";
 }
 
-// Reads one file: CsvReader problems are reported, line 1 (header) dropped
+// Reads one file: CsvReader problems are reported, the first non-blank row
+// (the header) is dropped. CsvReader already skips blank lines, so the header
+// is still found when the file starts with blank lines
 // Time O(C) space O(C)
 std::vector<CsvReader::Row> readDataRows(const std::string& folder,
                                          const std::string& fileName,
@@ -74,13 +76,10 @@ std::vector<CsvReader::Row> readDataRows(const std::string& folder,
     for (const auto& p : reader.problems()) {
         report.add(p.lineNumber, p.message);
     }
-    std::vector<CsvReader::Row> data;
-    for (auto& row : rows) {
-        if (row.lineNumber != 1) {
-            data.push_back(std::move(row));
-        }
+    if (!rows.empty()) {
+        rows.erase(rows.begin());
     }
-    return data;
+    return rows;
 }
 
 }  // namespace
