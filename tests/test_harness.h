@@ -11,8 +11,8 @@ Minimal assert style test helper for ReliefRoute (no external framework)
 
 namespace testing {
 
-// Number of failed checks in this run C++17 inline variable one shared
-// instance across all test translation units.
+/* Number of failed checks in this run C++17 inline variable one shared
+instance across all test translation units */
 inline int failures = 0;
 
 }  // namespace testing
@@ -28,7 +28,7 @@ inline int failures = 0;
     } while (0)
 
 /* Time O(1) space O(1) beyond evaluating the arguments both sides are
- evaluated exactly once Requires operator== and operator<< for the type. */
+ evaluated exactly once Requires operator== and operator<< for the type */
 #define CHECK_EQ(actual, expected)                                         \
     do {                                                                   \
         const auto checkActual_ = (actual);                                \
@@ -60,8 +60,8 @@ inline int failures = 0;
         }                                                                  \
     } while (0)
 
-// Runs one test function an unexpected exception counts as one failure
-// instead of aborting the whole run so the remaining tests still execute.
+/* Runs one test function an unexpected exception counts as one failure
+ instead of aborting the whole run so the remaining tests still execute */
 // Time O(1) overhead beyond the test itself
 #define RUN_TEST(testFn)                                                   \
     do {                                                                   \
@@ -77,8 +77,8 @@ inline int failures = 0;
         }                                                                  \
     } while (0)
 
-// One entry point per class under test add a declaration here and a call
-// in test_main.cpp for every new test file
+/* One entry point per class under test add a declaration here and a call
+in test_main.cpp for every new test file */
 void runFlowNetworkTests();
 void runBinarySearchTests();
 void runAllocationResultTests();
@@ -89,3 +89,5 @@ void runParamsTests();
 void runCsvReaderTests();
 void runSampleLoaderTests();
 void runCliTests();
+void runTimerTests();
+void runLinkMaxFlowTests();

@@ -1,4 +1,4 @@
-/* Iteration 3 prototype loader (interfaces.md §5)
+/* Iteration 3 prototype loader
  Reads <folder>/sites.csv, depots.csv and links.csv into validated Site and
  Depot objects plus the allowed depot->site links. A bad line is reported as
  "<file>:<line>: <message>" and skipped, never a crash. For a duplicate id
