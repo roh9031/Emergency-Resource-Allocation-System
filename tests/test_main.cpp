@@ -10,6 +10,11 @@ int main() {
     runBinarySearchTests();
     runAllocationResultTests();
     runAllocationStrategyTests();
+    runSiteTests();
+    runDepotTests();
+    runParamsTests();
+    runCsvReaderTests();
+    runSampleLoaderTests();
     runTimerTests();
 
     if (testing::failures == 0) {

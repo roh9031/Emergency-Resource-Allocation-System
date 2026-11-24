@@ -9,9 +9,9 @@ add_compile_options(-Wall -Wextra)
 # (BinarySearch, MergeSort, AllocationStrategy, CostScale) need no entry
 add_library(core STATIC
     # domain: problem data with validated invariants
-    # core/domain/Site.cpp
-    # core/domain/Depot.cpp
-    # core/domain/Params.cpp
+    core/domain/Site.cpp
+    core/domain/Depot.cpp
+    core/domain/Params.cpp
     # core/domain/RoadGraph.cpp
     # core/domain/Scenario.cpp
     # core/domain/SpatialGrid.cpp
@@ -37,7 +37,8 @@ add_library(core STATIC
     core/evaluation/Timer.cpp
 
     # io: files in and out, with validation
-    # core/io/CsvReader.cpp
+    core/io/CsvReader.cpp
+    core/io/SampleLoader.cpp
     # core/io/DimacsGraphReader.cpp
     # core/io/ScenarioLoader.cpp
     # core/io/ResultWriter.cpp
@@ -65,9 +66,16 @@ add_executable(unit-tests
     tests/test_binary_search.cpp
     tests/test_allocation_result.cpp
     tests/test_allocation_strategy.cpp
+    tests/test_site.cpp
+    tests/test_depot.cpp
+    tests/test_params.cpp
+    tests/test_csv_reader.cpp
+    tests/test_sample_loader.cpp
     tests/test_timer.cpp
 )
 target_link_libraries(unit-tests PRIVATE core)
+# Lets loader tests find data/sample/ no matter where ctest runs from
+target_compile_definitions(unit-tests PRIVATE RELIEFROUTE_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
 add_test(NAME unit-tests COMMAND unit-tests)
 # An infinite loop in a flow algorithm fails the test instead of hanging ctest
 set_tests_properties(unit-tests PROPERTIES TIMEOUT 30)
