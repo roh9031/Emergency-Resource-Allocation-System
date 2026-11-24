@@ -61,8 +61,8 @@ inline int failures = 0;
     } while (0)
 
 /* Runs one test function an unexpected exception counts as one failure
- instead of aborting the whole run so the remaining tests still execute
-Time O(1) overhead beyond the test itself */
+ instead of aborting the whole run so the remaining tests still execute */
+// Time O(1) overhead beyond the test itself
 #define RUN_TEST(testFn)                                                   \
     do {                                                                   \
         try {                                                              \
