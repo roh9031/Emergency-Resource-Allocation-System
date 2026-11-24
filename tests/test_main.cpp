@@ -15,6 +15,7 @@ int main() {
     runParamsTests();
     runCsvReaderTests();
     runSampleLoaderTests();
+    runCliTests();
     runTimerTests();
     runLinkMaxFlowTests();
 

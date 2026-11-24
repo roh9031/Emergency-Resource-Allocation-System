@@ -88,5 +88,6 @@ void runDepotTests();
 void runParamsTests();
 void runCsvReaderTests();
 void runSampleLoaderTests();
+void runCliTests();
 void runTimerTests();
 void runLinkMaxFlowTests();
