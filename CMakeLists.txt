@@ -35,7 +35,7 @@ add_library(core STATIC
     # core/evaluation/BruteForceSolver.cpp
     # core/evaluation/InstanceGenerator.cpp
     # core/evaluation/ExperimentRunner.cpp
-    # core/evaluation/Timer.cpp
+    core/evaluation/Timer.cpp
 
     # io: files in and out, with validation
     core/io/CsvReader.cpp
@@ -72,6 +72,7 @@ add_executable(unit-tests
     tests/test_params.cpp
     tests/test_csv_reader.cpp
     tests/test_sample_loader.cpp
+    tests/test_timer.cpp
     tests/test_link_max_flow.cpp
 )
 target_link_libraries(unit-tests PRIVATE core)

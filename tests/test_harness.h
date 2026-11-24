@@ -42,7 +42,7 @@ inline int failures = 0;
         }                                                                  \
     } while (0)
 
-// Passes only if `xpr throws exactly ExceptionType (or a subclass of it)
+// Passes only if `expr` throws exactly ExceptionType (or a subclass of it)
 // Time O(1) space O(1) beyond evaluating `expr`
 #define CHECK_THROWS(expr, ExceptionType)                                  \
     do {                                                                   \
@@ -61,8 +61,8 @@ inline int failures = 0;
     } while (0)
 
 /* Runs one test function an unexpected exception counts as one failure
- instead of aborting the whole run so the remaining tests still execute */
-// Time O(1) overhead beyond the test itself
+ instead of aborting the whole run so the remaining tests still execute
+Time O(1) overhead beyond the test itself */
 #define RUN_TEST(testFn)                                                   \
     do {                                                                   \
         try {                                                              \
@@ -88,4 +88,5 @@ void runDepotTests();
 void runParamsTests();
 void runCsvReaderTests();
 void runSampleLoaderTests();
+void runTimerTests();
 void runLinkMaxFlowTests();
