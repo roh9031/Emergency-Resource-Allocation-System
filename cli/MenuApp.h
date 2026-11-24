@@ -1,3 +1,15 @@
+/* Text menu for the iteration 3 prototype (interfaces.md §5)
+   1. Load a sample folder (default data/sample/basic)
+   2. Show load problems
+   3. Run allocation
+   4. Exit
+ The allocator is passed in as a function so MenuApp does not depend on
+ which allocator exists yet (A2 now, AllocationService in iteration 4).
+ An empty function means "no allocator built in": option 3 says so instead
+ of crashing. Every error (missing folder, allocator exception) is printed
+ and the menu continues */
+#pragma once
+
 #include <functional>
 #include <iostream>
 #include <optional>
