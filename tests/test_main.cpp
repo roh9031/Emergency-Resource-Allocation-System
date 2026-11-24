@@ -1,5 +1,5 @@
 /* Test runner Each class has its own test file with a run<Class>Tests()
-function; call them from main(). Exit code is non zero if any check fails
+function; call them from main() exit code is non zero if any check fails
 so ctest and CI fail */
 #include <iostream>
 
@@ -15,6 +15,7 @@ int main() {
     runParamsTests();
     runCsvReaderTests();
     runSampleLoaderTests();
+    runTimerTests();
 
     if (testing::failures == 0) {
         std::cout << "All tests passed.\n";

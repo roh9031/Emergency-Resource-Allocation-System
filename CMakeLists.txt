@@ -34,7 +34,7 @@ add_library(core STATIC
     # core/evaluation/BruteForceSolver.cpp
     # core/evaluation/InstanceGenerator.cpp
     # core/evaluation/ExperimentRunner.cpp
-    # core/evaluation/Timer.cpp
+    core/evaluation/Timer.cpp
 
     # io: files in and out, with validation
     core/io/CsvReader.cpp
@@ -71,6 +71,7 @@ add_executable(unit-tests
     tests/test_params.cpp
     tests/test_csv_reader.cpp
     tests/test_sample_loader.cpp
+    tests/test_timer.cpp
 )
 target_link_libraries(unit-tests PRIVATE core)
 # Lets loader tests find data/sample/ no matter where ctest runs from
