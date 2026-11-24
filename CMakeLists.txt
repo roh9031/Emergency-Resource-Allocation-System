@@ -20,6 +20,7 @@ add_library(core STATIC
     # algorithms: all graded algorithms
     core/algorithms/FlowNetwork.cpp
     core/algorithms/LinkMaxFlowAllocator.cpp
+    core/algorithms/LinkGreedyAllocator.cpp
     # core/algorithms/Dijkstra.cpp
     # core/algorithms/GreedyAllocator.cpp
     # core/algorithms/FlowBasedAllocator.cpp
@@ -74,6 +75,8 @@ add_executable(unit-tests
     tests/test_sample_loader.cpp
     tests/test_timer.cpp
     tests/test_link_max_flow.cpp
+    tests/test_merge_sort.cpp
+    tests/test_link_greedy.cpp
 )
 target_link_libraries(unit-tests PRIVATE core)
 # Lets loader tests find data/sample/ no matter where ctest runs from

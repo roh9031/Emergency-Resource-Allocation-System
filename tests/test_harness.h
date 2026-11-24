@@ -90,3 +90,5 @@ void runCsvReaderTests();
 void runSampleLoaderTests();
 void runTimerTests();
 void runLinkMaxFlowTests();
+void runMergeSortTests();
+void runLinkGreedyTests();
