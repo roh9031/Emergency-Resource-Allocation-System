@@ -1,4 +1,4 @@
-/* Text menu for the iteration 3 prototype (interfaces.md §5)
+/* Text menu for the iteration 3 prototype
    1. Load a sample folder (default data/sample/basic)
    2. Show load problems
    3. Run allocation
