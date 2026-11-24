@@ -11,8 +11,8 @@ Minimal assert style test helper for ReliefRoute (no external framework)
 
 namespace testing {
 
-// Number of failed checks in this run C++17 inline variable one shared
-// instance across all test translation units.
+/* Number of failed checks in this run C++17 inline variable one shared
+instance across all test translation units */
 inline int failures = 0;
 
 }  // namespace testing
@@ -89,3 +89,4 @@ void runParamsTests();
 void runCsvReaderTests();
 void runSampleLoaderTests();
 void runTimerTests();
+void runLinkMaxFlowTests();
