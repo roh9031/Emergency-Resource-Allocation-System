@@ -1,0 +1,8 @@
+id,name,demand,urgency,lat,lon
+1,Site P,10,8,35.60,-82.55
+2,Site Q,6,5,35.70,-82.40
+3,Site R,7,35.65,-82.45
+4,Site S,abc,6,35.55,-82.60
+5,Site T,-4,7,35.50,-82.70
+2,Site Q duplicate,3,4,35.72,-82.41
+6,Site U,4,3,35.58,-82.52
