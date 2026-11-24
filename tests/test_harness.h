@@ -83,3 +83,6 @@ void runFlowNetworkTests();
 void runBinarySearchTests();
 void runAllocationResultTests();
 void runAllocationStrategyTests();
+void runSiteTests();
+void runDepotTests();
+void runParamsTests();
