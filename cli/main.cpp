@@ -4,7 +4,10 @@
  Run from the repository root so the default folder data/sample/basic resolves.
  The allocator is Rohini's LinkMaxFlowAllocator (A2). Until that file is merged
  the program still builds and runs; option 3 just says allocation is not
- available yet */
+ available yet.
+ Note: __has_include is checked when this file is compiled, and the build does
+ not track a header that did not exist yet. After LinkMaxFlowAllocator.h is
+ added, re-run cmake (or touch cli/main.cpp) so an existing build picks it up */
 #include <iostream>
 #include <string>
 

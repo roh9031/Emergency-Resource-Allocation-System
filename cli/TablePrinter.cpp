@@ -1,5 +1,6 @@
 #include "TablePrinter.h"
 
+#include <algorithm>
 #include <iomanip>
 #include <sstream>
 #include <unordered_map>
