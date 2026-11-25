@@ -51,8 +51,17 @@ add_library(core STATIC
 target_include_directories(core PUBLIC core)
 
 # Command-line interface 
+# UI code shared by the executable and the CLI tests
+add_library(cliui STATIC
+    cli/InputReader.cpp
+    cli/TablePrinter.cpp
+    cli/MenuApp.cpp
+)
+target_include_directories(cliui PUBLIC cli)
+target_link_libraries(cliui PUBLIC core)
+
 add_executable(reliefroute-cli cli/main.cpp)
-target_link_libraries(reliefroute-cli PRIVATE core)
+target_link_libraries(reliefroute-cli PRIVATE cliui)
 
 # uncomment this code later
 # find_package(Threads REQUIRED)
@@ -75,10 +84,11 @@ add_executable(unit-tests
     tests/test_sample_loader.cpp
     tests/test_timer.cpp
     tests/test_link_max_flow.cpp
+    tests/test_cli.cpp
     tests/test_merge_sort.cpp
     tests/test_link_greedy.cpp
 )
-target_link_libraries(unit-tests PRIVATE core)
+target_link_libraries(unit-tests PRIVATE core cliui)
 # Lets loader tests find data/sample/ no matter where ctest runs from
 target_compile_definitions(unit-tests PRIVATE RELIEFROUTE_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
 add_test(NAME unit-tests COMMAND unit-tests)
