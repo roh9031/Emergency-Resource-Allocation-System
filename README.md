@@ -158,8 +158,8 @@ One test executable (`unit-tests`) runs every test file in [`tests/`](tests/) wi
 | `cli/` | C++ menu and batch mode over the core | B |
 | `web/` | Browser frontend (display only, no algorithms) | B |
 | `tests/` | Unit, API, and consistency tests | both |
-| `data/` | Input data (raw downloads are not committed) | B |
-| `scripts/` | Data download and preprocessing (Python) | B |
+| `data/` | Input data (raw downloads are not committed) | A |
+| `scripts/` | Data download and preprocessing (Python) | A |
 | `experiments/` | Experiment configs and results | B |
 | `docs/` | Proposal, API reference, design notes, report | both |
 | `third_party/` | Header-only libraries (httplib, json) | A |
