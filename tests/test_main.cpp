@@ -18,6 +18,8 @@ int main() {
     runCliTests();
     runTimerTests();
     runLinkMaxFlowTests();
+    runMergeSortTests();
+    runLinkGreedyTests();
 
     if (testing::failures == 0) {
         std::cout << "All tests passed.\n";

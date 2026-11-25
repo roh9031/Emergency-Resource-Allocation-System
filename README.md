@@ -28,6 +28,17 @@ Supporting algorithms (all written by us): merge sort, binary search, grid neare
 
 The prototype runs end to end: **read three CSV files → validate them → allocate with A2 (Edmonds–Karp maximum flow) → print a table**. Bad input lines are reported and skipped instead of crashing the program.
 
+The second approach, **A1 urgency-first greedy** (`LinkGreedyAllocator`, built on our own merge sort and binary search), is also implemented and unit-tested over the same input. It is not in the menu yet. On the samples it already shows the trade-off the project studies:
+
+| Sample | A1 kits delivered | A2 kits delivered | A1 urgency-weighted | A2 urgency-weighted |
+|--------|------------------:|------------------:|--------------------:|--------------------:|
+| `basic/` | 18 | 18 | 172 | 172 |
+| `motivating/` | 1 | 2 | 10 | 19 |
+| `invalid/` | 17 | 17 | 113 | 107 |
+| `large/` | 3982 | 3990 | 23894.1 | 20071.5 |
+
+Urgency-weighted delivery is the sum of kits × site urgency. A2 delivers the most kits but ignores urgency, so on `large/` greedy delivers 8 fewer kits but about 19% more urgency-weighted value.
+
 Until travel times exist (iteration 4), the allowed depot → site connections come from a third file, `links.csv`. See [`data/README.md`](data/README.md).
 
 ## Build
@@ -121,9 +132,10 @@ One test executable (`unit-tests`) runs every test file in [`tests/`](tests/) wi
 | A2 allocation (core operation) | Complete | `LinkMaxFlowAllocator`: 18 / 2 / 17 / 3990 on the four samples |
 | Results and timing | Complete | `AllocationResult`, `Timer` |
 | Command-line menu | Complete | `cli/`: menu, one-shot mode, table and fill-rate summary |
-| Binary search | Complete | `BinarySearch` template, used once ids are sorted |
+| Binary search | Complete | `BinarySearch` template, used by the greedy allocator |
+| Merge sort | Complete | `MergeSort` template (stable) and `UrgencyOrder`, 7 unit tests |
+| A1 greedy (second approach) | In progress | `LinkGreedyAllocator`, 9 unit tests; remaining: menu option, travel-time depot order |
 | Road network and Dijkstra travel times | Planned (iteration 4) | replaces `links.csv`: a link exists when travel time ≤ deadline |
-| A1 greedy (second approach) | Planned (iteration 4) | merge sort by urgency, then nearest feasible depot |
 | A3–A5, comparison experiments | Planned (iteration 4) | min-cost flow (Bellman–Ford), lexicographic and max-min fair flow |
 | Allocation validator, brute-force checker | Planned (iteration 4) | independent check of every method's output |
 | REST server and web map | Planned | after the C++ engine is complete |
@@ -131,9 +143,10 @@ One test executable (`unit-tests`) runs every test file in [`tests/`](tests/) wi
 ## Known limitations
 
 - **Links are given, not computed.** Which depot can serve which site comes from `links.csv`; real road travel times arrive in iteration 4.
-- **Only A2 is implemented.** It maximises the total number of kits delivered but ignores urgency, so when several maximum allocations exist it may pick any of them.
+- **Only A2 runs from the menu.** A2 maximises the total number of kits delivered but ignores urgency, so when several maximum allocations exist it may pick any of them. A1 greedy is implemented and tested but not yet a menu option.
+- **A1 tries depots in ID order.** Without travel times, each site's depots are tried lowest ID first; in iteration 4 the order becomes nearest depot first.
 - **Coordinates are not used yet.** `lat` and `lon` are read and stored for the road network later.
-- **Sites and depots are looked up by linear scan**, which is O(n) per link. That is fine for these sizes; it becomes sort once + binary search when merge sort is added.
+- **A2 looks up sites and depots by linear scan**, which is O(n) per link. That is fine for these sizes. A1 already uses sort once + binary search, and A2 will share that in iteration 4.
 - **Menu and one-shot mode only.** There is no batch mode for experiments, no server and no web interface yet.
 
 ## Repository layout
