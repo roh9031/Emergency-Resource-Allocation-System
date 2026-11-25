@@ -188,6 +188,30 @@ void testInputUnchanged() {
     CHECK_EQ(d.links[0].siteId, before.links[0].siteId);
 }
 
+/* 9. Depots are tried in ascending id order (core/README.md), whatever the row
+   order of links.csv: the same links listed backwards give the same result */
+void testRowOrderDoesNotMatter() {
+    LoadedData forward;
+    addSite(forward, 1, 6, 5.0);
+    addDepot(forward, 1, 4);
+    addDepot(forward, 2, 4);
+    addDepot(forward, 3, 4);
+    addLink(forward, 1, 1, 4);
+    addLink(forward, 2, 1, 4);
+    addLink(forward, 3, 1, 4);
+    LoadedData backward = forward;
+    backward.links = {{3, 1, 4}, {2, 1, 4}, {1, 1, 4}};
+
+    const AllocationResult a = LinkGreedyAllocator().allocate(forward);
+    const AllocationResult b = LinkGreedyAllocator().allocate(backward);
+    // Lowest ids first: depot 1 gives 4, depot 2 gives the remaining 2, depot 3 nothing
+    for (const AllocationResult* r : {&a, &b}) {
+        CHECK_EQ(unitsOn(*r, 1, 1), 4LL);
+        CHECK_EQ(unitsOn(*r, 2, 1), 2LL);
+        CHECK_EQ(unitsOn(*r, 3, 1), 0LL);
+    }
+}
+
 }  // namespace
 
 void runLinkGreedyTests() {
@@ -199,4 +223,5 @@ void runLinkGreedyTests() {
     RUN_TEST(testLargeAndInvalidSamples);
     RUN_TEST(testInvalidInputThrows);
     RUN_TEST(testInputUnchanged);
+    RUN_TEST(testRowOrderDoesNotMatter);
 }

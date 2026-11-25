@@ -3,8 +3,10 @@
  In iteration 4 GreedyAllocator gets its links from travel time <= deadline
  and implements AllocationStrategy
 
- Idea: serve the most urgent site first, as fully as its links allow, then
- the next most urgent, and so on. A shipment is never taken back.
+ Idea: serve the most urgent site first, as fully as its links allow (its
+ depots tried in ascending id order, as core/README.md specifies when there
+ are no travel times), then the next most urgent, and so on. A shipment is
+ never taken back. The result does not depend on the row order of links.csv
  This is fast and simple, but it can strand supply: on the motivating
  example it ships A->X first, after which Y (reachable only from A) gets
  nothing, so A1 delivers 1 kit where A2 (max flow) delivers 2 */

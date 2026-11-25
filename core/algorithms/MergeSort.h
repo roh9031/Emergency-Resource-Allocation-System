@@ -2,9 +2,9 @@
  Used by the greedy allocator (sites by urgency, depots and links by id) and,
  in iteration 4, by Scenario (sites by id) and sitesByUrgency()
 
- Stable: elements that compare equal keep their original relative order.
- The greedy allocator relies on this so links for the same site stay in
- links.csv order.
+ Stable: elements that compare equal keep their original relative order
+ (UrgencyOrder breaks every tie by id, so the greedy order is fully determined
+ either way).
 
  Header-only on purpose: a class template must be fully visible wherever it
  is instantiated (same reason as BinarySearch.h) */

@@ -26,15 +26,14 @@ int smallest(int a, int b, int c) {
 /* Pseudocode
    order      = sites sorted by UrgencyOrder            (MergeSort, stable)
    depotsById = depots sorted by id; left[d] = supply   (MergeSort)
-   bySite     = links sorted by siteId                  (MergeSort, stable:
-                                                         file order kept per site)
+   byPair     = links sorted by (siteId, depotId)       (MergeSort)
    validate: negative / duplicate ids (adjacent after sorting), negative capacity,
              unknown depot or site (BinarySearch miss), duplicate link
    for each site s in order:
        need = demand(s)
-       k = leftmost link in bySite with siteId == s.id  (BinarySearch)
-       while k < L and bySite[k].siteId == s.id and need > 0:
-           d = index of bySite[k].depotId in depotsById  (BinarySearch)
+       k = leftmost link in byPair with siteId == s.id  (BinarySearch)
+       while k < L and byPair[k].siteId == s.id and need > 0:   <- depots in id order
+           d = index of byPair[k].depotId in depotsById  (BinarySearch)
            amount = min(left[d], need, capacity of link k)
            if amount > 0: ship amount on link k; left[d] -= amount; need -= amount
            k = k + 1
@@ -48,10 +47,6 @@ AllocationResult LinkGreedyAllocator::allocate(const LoadedData& data) const {
     std::vector<Depot> depotsById = data.depots;
     MergeSort<Depot>([](const Depot& a, const Depot& b) { return a.id() < b.id(); })
         .sort(depotsById);
-
-    std::vector<Link> bySite = data.links;
-    MergeSort<Link>([](const Link& a, const Link& b) { return a.siteId < b.siteId; })
-        .sort(bySite);
 
     const BinarySearch<Depot, int> findDepot([](const Depot& d) { return d.id(); });
     const BinarySearch<Link, int> findFirstLink([](const Link& l) { return l.siteId; });
@@ -84,7 +79,10 @@ AllocationResult LinkGreedyAllocator::allocate(const LoadedData& data) const {
     }
     const BinarySearch<Site, int> findSite([](const Site& s) { return s.id(); });
 
-    std::vector<Link> byPair = data.links;  // (siteId, depotId) order: duplicates adjacent
+    /* Links in (siteId, depotId) order: duplicate links end up adjacent, and
+       each site's depots are tried in ascending id order (core/README.md), so the
+       result does not depend on the row order of links.csv */
+    std::vector<Link> byPair = data.links;
     MergeSort<Link>([](const Link& a, const Link& b) {
         return a.siteId != b.siteId ? a.siteId < b.siteId : a.depotId < b.depotId;
     }).sort(byPair);
@@ -118,13 +116,15 @@ AllocationResult LinkGreedyAllocator::allocate(const LoadedData& data) const {
     AllocationResult result("A1");
     for (const Site& site : order) {
         int need = site.demand();
-        int k = findFirstLink.find(bySite, site.id());
+        // byPair is sorted by siteId first, so BinarySearch on siteId finds the
+        // site's first link (its lowest depot id)
+        int k = findFirstLink.find(byPair, site.id());
         if (k == -1) {
             continue;  // no allowed links: this site gets nothing
         }
-        while (k < static_cast<int>(bySite.size()) && bySite[k].siteId == site.id() &&
+        while (k < static_cast<int>(byPair.size()) && byPair[k].siteId == site.id() &&
                need > 0) {
-            const Link& link = bySite[k];
+            const Link& link = byPair[k];
             const int d = findDepot.find(depotsById, link.depotId);
             const int amount = smallest(left[d], need, link.capacity);
             if (amount > 0) {
