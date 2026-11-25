@@ -26,9 +26,9 @@ Supporting algorithms (all written by us): merge sort, binary search, grid neare
 
 ## Current status (iteration 3 prototype)
 
-The prototype runs end to end: **read three CSV files → validate them → allocate with A2 (Edmonds–Karp maximum flow) → print a table**. Bad input lines are reported and skipped instead of crashing the program.
+The prototype runs end to end: **read three CSV files → validate them → allocate with A1 (urgency-first greedy), A2 (Edmonds–Karp maximum flow) or both → print the result**. Bad input lines are reported and skipped instead of crashing the program.
 
-The second approach, **A1 urgency-first greedy** (`LinkGreedyAllocator`, built on our own merge sort and binary search), is also implemented and unit-tested over the same input. It is not in the menu yet. On the samples it already shows the trade-off the project studies:
+A2 is the core operation. The second approach, **A1 urgency-first greedy** (`LinkGreedyAllocator`, built on our own merge sort and binary search), runs over the same input, and the menu can compare the two side by side. On the samples they already show the trade-off the project studies:
 
 | Sample | A1 kits delivered | A2 kits delivered | A1 urgency-weighted | A2 urgency-weighted |
 |--------|------------------:|------------------:|--------------------:|--------------------:|
@@ -72,12 +72,12 @@ Run from the repository root, so the default sample folder is found.
 |--------|--------------|
 | 1. Load a sample folder | asks for a folder; Enter loads `data/sample/basic` |
 | 2. Show load problems | every skipped line as `<file>:<line>: <message>` |
-| 3. Run allocation (A2 max flow) | allocates and prints the shipment table and per-site fill rates |
+| 3. Run allocation | asks for a method: 1. A1 greedy, 2. A2 max flow (each prints the shipment table and per-site fill rates), or 3. Compare A1 vs A2 (kits delivered, urgency-weighted value and runtime per method) |
 | 4. Exit | |
 
-Bad menu input (letters, decimals, numbers out of range) is asked again. A missing folder prints an error and the menu continues.
+Bad input (letters, decimals, numbers out of range) is asked again, both in the menu and at the method prompt. A missing folder prints an error and the menu continues.
 
-**One shot:** load a folder, list its problems, allocate, print, exit:
+**One shot:** load a folder, list its problems, run both methods, print both tables and the comparison, exit:
 
 ```bash
 ./build/reliefroute-cli data/sample/motivating
@@ -86,19 +86,25 @@ Bad menu input (letters, decimals, numbers out of range) is asked again. A missi
 Example output (shortened):
 
 ```
+Allocation (A1)
+Depot        ->  Site          Units
+------------------------------------
+Depot A (1)  ->  Site X (1)        1
+...
 Allocation (A2)
 Depot        ->  Site          Units
 ------------------------------------
 Depot A (1)  ->  Site Y (2)        1
 Depot B (2)  ->  Site X (1)        1
-
-Summary
-  Total supply : 2
-  Total demand : 2
-  Delivered    : 2  (100.0% of demand)
+...
+Comparison
+Method                       Kits   Weighted value   Runtime (ms)
+-----------------------------------------------------------------
+A1 greedy (urgency first)       1            10.00          0.015
+A2 max flow                     2            19.00          0.015
 ```
 
-A greedy rule that serves the most urgent site X first from depot A would deliver only 1 kit here. Max flow finds the allocation that delivers both.
+Greedy serves the most urgent site X first from depot A, so Y (reachable only from A) gets nothing and only 1 kit is delivered. Max flow finds the allocation that delivers both. Runtimes vary from run to run.
 
 ## Sample data
 
@@ -131,10 +137,10 @@ One test executable (`unit-tests`) runs every test file in [`tests/`](tests/) wi
 | Residual flow network + Edmonds–Karp | Complete | `FlowNetwork::maxFlow`, 21 unit tests |
 | A2 allocation (core operation) | Complete | `LinkMaxFlowAllocator`: 18 / 2 / 17 / 3990 on the four samples |
 | Results and timing | Complete | `AllocationResult`, `Timer` |
-| Command-line menu | Complete | `cli/`: menu, one-shot mode, table and fill-rate summary |
+| Command-line menu | Complete | `cli/`: menu with method choice and A1 vs A2 comparison, one-shot mode, table and fill-rate summary |
 | Binary search | Complete | `BinarySearch` template, used by the greedy allocator |
 | Merge sort | Complete | `MergeSort` template (stable) and `UrgencyOrder`, 7 unit tests |
-| A1 greedy (second approach) | In progress | `LinkGreedyAllocator`, 9 unit tests; remaining: menu option, travel-time depot order |
+| A1 greedy (second approach) | Complete over `links.csv` | `LinkGreedyAllocator`, 9 unit tests, in the menu; remaining (iteration 4): depot order by travel time |
 | Road network and Dijkstra travel times | Planned (iteration 4) | replaces `links.csv`: a link exists when travel time ≤ deadline |
 | A3–A5, comparison experiments | Planned (iteration 4) | min-cost flow (Bellman–Ford), lexicographic and max-min fair flow |
 | Allocation validator, brute-force checker | Planned (iteration 4) | independent check of every method's output |
@@ -143,7 +149,7 @@ One test executable (`unit-tests`) runs every test file in [`tests/`](tests/) wi
 ## Known limitations
 
 - **Links are given, not computed.** Which depot can serve which site comes from `links.csv`; real road travel times arrive in iteration 4.
-- **Only A2 runs from the menu.** A2 maximises the total number of kits delivered but ignores urgency, so when several maximum allocations exist it may pick any of them. A1 greedy is implemented and tested but not yet a menu option.
+- **Only two methods so far.** A2 maximises the total number of kits delivered but ignores urgency, so when several maximum allocations exist it may pick any of them. A1 follows urgency but never undoes a shipment. Neither is the urgency-weighted optimum; that benchmark (A4) arrives in iteration 4.
 - **A1 tries depots in ID order.** Without travel times, each site's depots are tried lowest ID first; in iteration 4 the order becomes nearest depot first.
 - **Coordinates are not used yet.** `lat` and `lon` are read and stored for the road network later.
 - **A2 looks up sites and depots by linear scan**, which is O(n) per link. That is fine for these sizes. A1 already uses sort once + binary search, and A2 will share that in iteration 4.
@@ -158,8 +164,8 @@ One test executable (`unit-tests`) runs every test file in [`tests/`](tests/) wi
 | `cli/` | C++ menu and batch mode over the core | B |
 | `web/` | Browser frontend (display only, no algorithms) | B |
 | `tests/` | Unit, API, and consistency tests | both |
-| `data/` | Input data (raw downloads are not committed) | B |
-| `scripts/` | Data download and preprocessing (Python) | B |
+| `data/` | Input data (raw downloads are not committed) | A |
+| `scripts/` | Data download and preprocessing (Python) | A |
 | `experiments/` | Experiment configs and results | B |
 | `docs/` | Proposal, API reference, design notes, report | both |
 | `third_party/` | Header-only libraries (httplib, json) | A |

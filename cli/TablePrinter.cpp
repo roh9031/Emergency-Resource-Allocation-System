@@ -99,6 +99,52 @@ void TablePrinter::printAllocation(const AllocationResult& result, const LoadedD
     }
 }
 
+// Time O(K + S) expected, space O(S)
+double TablePrinter::weightedValue(const AllocationResult& result, const LoadedData& data) {
+    std::unordered_map<int, double> urgencyOf;
+    for (const auto& s : data.sites) urgencyOf[s.id()] = s.urgency();
+    double value = 0.0;
+    for (const auto& a : result.shipments()) {
+        const auto it = urgencyOf.find(a.siteId);
+        if (it != urgencyOf.end()) {
+            value += a.units * it->second;
+        }
+    }
+    return value;
+}
+
+/* Pseudocode
+   print header: Method | Kits | Weighted value | Runtime (ms)
+   for each result i: print id + names[i], totalUnits, weightedValue, runtimeMs
+   Time O(M (K + S)) expected, space O(S) */
+void TablePrinter::printComparison(const std::vector<AllocationResult>& results,
+                                   const std::vector<std::string>& names,
+                                   const LoadedData& data, std::ostream& out) {
+    std::vector<std::string> labels;
+    std::size_t labelW = 6;  // "Method"
+    for (std::size_t i = 0; i < results.size(); ++i) {
+        std::string label = results[i].methodId();
+        if (i < names.size() && !names[i].empty()) {
+            label += " " + names[i];
+        }
+        labelW = std::max(labelW, label.size());
+        labels.push_back(label);
+    }
+    out << "\nComparison\n";
+    out << std::left << std::setw(static_cast<int>(labelW)) << "Method" << std::right
+        << std::setw(8) << "Kits" << std::setw(17) << "Weighted value" << std::setw(15)
+        << "Runtime (ms)" << "\n";
+    out << rule(labelW + 40) << "\n";
+    const std::ios::fmtflags saved = out.flags();
+    for (std::size_t i = 0; i < results.size(); ++i) {
+        out << std::left << std::setw(static_cast<int>(labelW)) << labels[i] << std::right
+            << std::setw(8) << results[i].totalUnits() << std::fixed << std::setprecision(2)
+            << std::setw(17) << weightedValue(results[i], data) << std::setprecision(3)
+            << std::setw(15) << results[i].runtimeMs() << "\n";
+        out.flags(saved);
+    }
+}
+
 // Time O(P) space O(1)
 void TablePrinter::printProblems(const std::vector<std::string>& problems, std::ostream& out) {
     if (problems.empty()) {
